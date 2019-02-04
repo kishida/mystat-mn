@@ -1,0 +1,13 @@
+#set( $title = "タイムライン")
+#parse("views/header.vm")
+  <div class="container text-center">
+    <h1><a href="/">MyStat</a> タイムライン</h1>
+    <ul class="list-group">
+      <li class="list-group-item">Helohelohelo</li>
+      <li class="list-group-item">Helohelohelo</li>
+      <li class="list-group-item">Helohelohelo</li>
+      <li class="list-group-item">Helohelohelo</li>
+      <li class="list-group-item">Helohelohelo</li>
+    </ul>
+  </div>
+#parse("views/footer.vm")

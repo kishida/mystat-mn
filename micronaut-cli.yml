@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: my.stat.mn
+---
+testFramework: junit
+sourceLanguage: java

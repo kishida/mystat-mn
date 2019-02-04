@@ -1,0 +1,17 @@
+#set( $title = "状態")
+#parse("views/header.vm")
+  <div class="container text-center">
+    <h1><a href="/">MyStat</a> 状態</h1>
+    <div class="card text-left">
+      <div class="card-body">
+        <h5 class="card-title">
+        <img src="http://localhost:9000/mystat/181808_2161567644.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=mystat%2F20190203%2F%2Fs3%2Faws4_request&X-Amz-Date=20190203T160748Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=a21b1a281ef56ef8553920dcec7683f556e9da68f484132a8d1ea8d6fc3447c1"
+             style="width: 48px; height: 48px;">
+        <a href="/user/kis">kis</a></h5>
+        <p class="card-text">hogehogehogehoge</p>
+        <h6 class="card-subtitle text-muted">2019/2/23 1:03</h6>
+      </div>
+    </div>
+  </div>
+#parse("views/footer.vm")
+
