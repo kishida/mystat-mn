@@ -42,6 +42,7 @@ dependencies {
     compile "io.micronaut:micronaut-http-server-netty"
     compile "javax.annotation:javax.annotation-api"
     compile "io.micronaut:micronaut-management"
+    compile "org.postgresql:postgresql:42.2.5"
     compileOnly 'org.projectlombok:lombok:1.18.4'
     compileOnly "com.oracle.substratevm:svm"
     compileOnly "io.micronaut:micronaut-inject-java"
