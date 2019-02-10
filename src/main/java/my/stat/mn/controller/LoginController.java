@@ -7,11 +7,8 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.multipart.CompletedFileUpload;
-import io.micronaut.http.multipart.StreamingFileUpload;
 import io.micronaut.views.View;
 import io.minio.MinioClient;
-import io.minio.messages.Bucket;
-import java.io.InputStream;
 import java.net.URI;
 import javax.inject.Inject;
 import my.stat.mn.data.User;
@@ -46,16 +43,18 @@ public class LoginController {
     //@Post(value="/register", consumes = MediaType.APPLICATION_FORM_URLENCODED)
     @Post(value="/register", consumes = MediaType.MULTIPART_FORM_DATA)
     public HttpResponse doRegister(String handle, String name, CompletedFileUpload icon) throws Exception {
+        System.out.println("doRegister");
         try (var sess = sessionFactory.openSession()) {
             var mapper = sess.getMapper(UserMapper.class);
             mapper.insert(User.builder()
                               .userName(name)
                               .userHandle(handle).build());
+            var content = icon.getContentType().map(mt -> mt.toString()).orElse("image/jpg");
+            minio.putObject("mystat", handle+"-icon", icon.getInputStream(), content);
+            
+            sess.commit();
+            return HttpResponse.redirect(URI.create("/"));
         }
         
-        var content = icon.getContentType().map(mt -> mt.toString()).orElse("image/jpg");
-        minio.putObject("mystat", handle+"-icon", icon.getInputStream(), content);
-        return HttpResponse.redirect(URI.create("/"));
     }
-    
 }

@@ -48,6 +48,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.4'
     compileOnly "com.oracle.substratevm:svm"
     compileOnly "io.micronaut:micronaut-inject-java"
+    runtime 'io.micronaut.configuration:micronaut-jdbc-hikari'
     runtime "ch.qos.logback:logback-classic:1.2.3"
     runtime "io.zipkin.brave:brave-instrumentation-http"
     runtime "io.zipkin.reporter2:zipkin-reporter"

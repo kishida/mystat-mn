@@ -21,5 +21,12 @@ micronaut:
                 step: PT1M
                 descriptions: true
 ---
+datasources:
+    default:
+        url: jdbc:postgresql://localhost:5432/mystat
+        username: mystat
+        password: pass
+        
+---
 redis:
     uri: redis://localhost
