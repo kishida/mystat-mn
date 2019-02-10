@@ -8,14 +8,11 @@ import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.multipart.CompletedFileUpload;
 import io.micronaut.views.View;
-import io.minio.MinioClient;
 import java.net.URI;
 import java.util.Optional;
 import javax.inject.Inject;
 import my.stat.mn.data.User;
-import my.stat.mn.repository.UserMapper;
 import my.stat.mn.service.UserService;
-import org.apache.ibatis.session.SqlSessionFactory;
 
 /**
  *

@@ -3,7 +3,6 @@ package my.stat.mn;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import io.micronaut.management.endpoint.annotation.Endpoint;
 import io.micronaut.management.endpoint.annotation.Read;
-import static io.reactivex.schedulers.Schedulers.io;
 import javax.inject.Inject;
 
 /**
