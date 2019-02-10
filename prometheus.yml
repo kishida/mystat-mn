@@ -1,0 +1,11 @@
+## Prometheus settiong
+
+global:
+    scrape_interval: 5s
+    
+scrape_configs:
+    - job_name: 'mystat'
+      metrics_path: '/prometheus'
+      static_configs:
+          - targets:
+              - '192.168.1.2:8080'
