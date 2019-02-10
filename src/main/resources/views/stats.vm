@@ -2,10 +2,20 @@
 #parse("views/header.vm")
   <div class="container text-center">
     <h1><a href="/">MyStat</a> ログ</h1>
-    <ul class="list-group">
-      <li class="list-group-item">Helohelohelo</li>
-      <li class="list-group-item">Helohelohelo</li>
-      <li class="list-group-item">Helohelohelo</li>
+    <ul class="list-group text-left">
+#foreach( $idx in [1, 2, 3, 4, 5])
+      <li class="list-group-item">
+        <img src="http://localhost:9000/mystat/kis_icon.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=mystat%2F20190204%2F%2Fs3%2Faws4_request&X-Amz-Date=20190204T191313Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=b7ef098cedc31b3527b13c5d67ec2def7e9485ec1177d45dc1fed30a49e7a2ae"
+             class="rounded float-left mr-2" style="width: 48px; height: 48px;">
+        <div>
+          <a href="/user/kis" class="font-weight-bold">kishida</a>
+          <a href="/stat/123" class="text-muted">2019/2/3 12:23</a>
+        </div>
+        <div>
+          Helohelohelo
+        </div>
+      </li>
+#end
       <li class="list-group-item">Helohelohelo</li>
       <li class="list-group-item">Helohelohelo</li>
     </ul>

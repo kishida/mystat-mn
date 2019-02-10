@@ -4,12 +4,12 @@
     <h1><a href="/">MyStat</a> 状態</h1>
     <div class="card text-left">
       <div class="card-body">
-        <h5 class="card-title">
-        <img src="http://localhost:9000/mystat/181808_2161567644.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=mystat%2F20190203%2F%2Fs3%2Faws4_request&X-Amz-Date=20190203T160748Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=a21b1a281ef56ef8553920dcec7683f556e9da68f484132a8d1ea8d6fc3447c1"
-             style="width: 48px; height: 48px;">
-        <a href="/user/kis">kis</a></h5>
+        <div class="card-title">
+        <img src="http://localhost:9000/mystat/kis_icon.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=mystat%2F20190204%2F%2Fs3%2Faws4_request&X-Amz-Date=20190204T191313Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=b7ef098cedc31b3527b13c5d67ec2def7e9485ec1177d45dc1fed30a49e7a2ae"
+             class="rounded flote-left" style="width: 48px; height: 48px;">
+        <a href="/user/kis" class="font-weight-bold">kis</a></div>
         <p class="card-text">hogehogehogehoge</p>
-        <h6 class="card-subtitle text-muted">2019/2/23 1:03</h6>
+        <p class="card-subtitle text-muted">2019/2/23 1:03</p>
       </div>
     </div>
   </div>
