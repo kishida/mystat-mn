@@ -10,9 +10,11 @@ import io.micronaut.http.multipart.CompletedFileUpload;
 import io.micronaut.views.View;
 import io.minio.MinioClient;
 import java.net.URI;
+import java.util.Optional;
 import javax.inject.Inject;
 import my.stat.mn.data.User;
 import my.stat.mn.repository.UserMapper;
+import my.stat.mn.service.UserService;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 /**
@@ -23,15 +25,19 @@ import org.apache.ibatis.session.SqlSessionFactory;
 @Produces(MediaType.TEXT_HTML)
 public class LoginController {
     @Inject
-    public MinioClient minio;
-    
-    @Inject
-    public SqlSessionFactory sessionFactory;
+    public UserService userService;
     
     @View("login")
     @Get("/login")
     public HttpResponse login() {
         return HttpResponse.ok();
+    }
+    
+    @Post(value="/login", consumes = MediaType.APPLICATION_FORM_URLENCODED)
+    public HttpResponse doLogin(String handle) {
+        Optional<User> user = userService.findByHandle(handle);
+        return user.map(u -> HttpResponse.redirect(URI.create("/")))
+                .orElseGet(() -> HttpResponse.notFound());
     }
 
     @View("register")
@@ -40,21 +46,10 @@ public class LoginController {
         return HttpResponse.ok();
     }
 
-    //@Post(value="/register", consumes = MediaType.APPLICATION_FORM_URLENCODED)
     @Post(value="/register", consumes = MediaType.MULTIPART_FORM_DATA)
     public HttpResponse doRegister(String handle, String name, CompletedFileUpload icon) throws Exception {
-        System.out.println("doRegister");
-        try (var sess = sessionFactory.openSession()) {
-            var mapper = sess.getMapper(UserMapper.class);
-            mapper.insert(User.builder()
-                              .userName(name)
-                              .userHandle(handle).build());
-            var content = icon.getContentType().map(mt -> mt.toString()).orElse("image/jpg");
-            minio.putObject("mystat", handle+"-icon", icon.getInputStream(), content);
-            
-            sess.commit();
-            return HttpResponse.redirect(URI.create("/"));
-        }
-        
+        var user = User.builder().userHandle(handle).userName(name).build();
+        userService.register(user, icon);
+        return HttpResponse.redirect(URI.create("/"));
     }
 }

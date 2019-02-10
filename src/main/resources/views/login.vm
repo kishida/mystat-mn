@@ -5,8 +5,8 @@
     <div class="text-left">
       <form method="post">
         <div class="form-group">
-          <label for="user_id">ID</label>
-          <input type="text" id="user_id" class="form-control">
+          <label for="handle">ID</label>
+          <input type="text" id="handle" name="handle" class="form-control">
         </div>
         <input type="submit" value="ログイン" class="btn btn-primary">
       </form>

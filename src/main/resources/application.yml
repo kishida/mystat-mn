@@ -30,3 +30,6 @@ datasources:
 ---
 redis:
     uri: redis://localhost
+    caches:
+        user:
+            expire-after-write: 1h

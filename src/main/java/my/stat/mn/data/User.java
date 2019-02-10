@@ -1,5 +1,6 @@
 package my.stat.mn.data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class User {
+public class User implements Serializable {
     long userId;
     String userName;
     String userHandle;

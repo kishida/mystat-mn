@@ -13,10 +13,13 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface UserMapper {
     @Select("select * from USERS")
-    List<User> selectUsers();
+    List<User> findAll();
 
     @Select("select * from USERS where USER_ID=#{id}")
-    Optional<User> selectUser(long id);    
+    Optional<User> findById(long id);    
+    
+    @Select("select * from USERS where USER_HANDLE=#{handle}")
+    Optional<User> findByHandle(String handle);
     
     @Insert("insert into USERS(user_name, user_handle) values (#{userName}, #{userHandle})")
     @Options(useGeneratedKeys = true)
