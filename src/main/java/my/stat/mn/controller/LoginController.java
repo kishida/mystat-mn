@@ -13,7 +13,6 @@ import io.micronaut.views.View;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import javax.inject.Inject;
 import my.stat.mn.data.User;
 import my.stat.mn.service.UserService;
@@ -50,7 +49,7 @@ public class LoginController {
     @Post(value="/register", consumes = MediaType.MULTIPART_FORM_DATA)
     public HttpResponse doRegister(String handle, String name, CompletedFileUpload icon) throws Exception {
         var user = User.builder().userHandle(handle).userName(name).build();
-        userService.register(user, icon);
+        userService.register(handle, user, icon);
         return HttpResponse.redirect(URI.create("/login/auth"));
     }
 }

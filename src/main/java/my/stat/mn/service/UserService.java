@@ -32,8 +32,8 @@ public class UserService {
         });
     }
     
-    @CacheInvalidate("user")
-    public void register(User u, CompletedFileUpload icon) {
+    @CacheInvalidate(value = "user", parameters = "handle")// since it can't specify like $u.userHandle. need param for the key
+    public void register(String handle, User u, CompletedFileUpload icon) {
         withMapper(mapper -> {
             mapper.insert(u);
             var content = icon.getContentType().map(mt -> mt.toString()).orElse("image/jpg");
