@@ -3,6 +3,15 @@
   <div class="container text-center">
     <h1><a href="/">MyStat</a> タイムライン</h1>
     $name <form method="post" action="/logout"><input type="submit" value="logout"></form>
+
+<form method="post" action="/">
+<div class="form-group text-left">
+<label for="text">ひとこと</label>
+<textarea name="text" id="text" class="form-control">
+</textarea>
+</div>
+<input type="submit">投稿</input>
+</form>
     <ul class="list-group">
       <li class="list-group-item">Helohelohelo</li>
       <li class="list-group-item">Helohelohelo</li>

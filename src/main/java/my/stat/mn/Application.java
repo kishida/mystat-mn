@@ -23,6 +23,7 @@ import io.micronaut.runtime.Micronaut;
  * > keys user*
  * > get user:aa
  * 
+ * $ docker run -d --name mystat-zipkin -p 9411:9411 openzipkin/zipkin
  * $ docker run -d --name mystat-mongo -p 27117:27017 -d mongo
  * $ docker run -d --name mystat-prom -p 9090:9090 -v /c/Users/naoki/Documents/NetBeansProjects/my-stat-mn:/prom-data prom/prometheus --config.file=/prom-data/prometheus.yml
  * @author naoki
