@@ -1,12 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package my.stat.mn.controller;
 
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Error;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.security.annotation.Secured;
@@ -31,5 +29,10 @@ public class ErrorController {
     @Get("/forbidden")
     public String forbidden() {
         return "forbidden";
+    }
+    
+    @Error(status = HttpStatus.NOT_FOUND, global = true)
+    public String notFound(HttpRequest req) {// security onだとダメ
+        return req.getUri() + " not found";
     }
 }

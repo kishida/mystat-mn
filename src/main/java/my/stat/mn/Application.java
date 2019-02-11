@@ -15,8 +15,14 @@ import io.micronaut.runtime.Micronaut;
  *  created_at timestamp default CURRENT_TIMESTAMP,
  *  updated_at timestamp default CURRENT_TIMESTAMP);
  * create unique index USERS_USER_HANDLE_INDEX on USERS (user_handle);
+ * $ docker exec -it mystat-pg psql -U mystat
+ * 
  * $ docker run -d --name mystat-minio -p 9000:9000 -e MINIO_ACCESS_KEY=mystat -e MINIO_SECRET_KEY=naokimystat minio/minio server /data
  * $ docker run --name mystat-redis -p 6379:6379 -d redis
+ * $ docker exec -it mystat-redis redis-cli
+ * > keys user*
+ * > get user:aa
+ * 
  * $ docker run -d --name mystat-mongo -p 27117:27017 -d mongo
  * $ docker run -d --name mystat-prom -p 9090:9090 -v /c/Users/naoki/Documents/NetBeansProjects/my-stat-mn:/prom-data prom/prometheus --config.file=/prom-data/prometheus.yml
  * @author naoki
