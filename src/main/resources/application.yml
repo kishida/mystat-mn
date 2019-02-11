@@ -12,7 +12,8 @@ micronaut:
         session:
             enabled: true
             login-failure-target-url: /login/authFailed
-
+            forbidden-target-url: /forbidden
+            unauthorized-target-url: /unauthorized
 # micronaut.views.velocity.enabled: true
 ---
 tracing:
