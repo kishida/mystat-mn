@@ -1,6 +1,5 @@
 package my.stat.mn.controller;
 
-import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -23,7 +22,7 @@ import javax.annotation.Nullable;
 public class IndexController {
     
     @Get(uri="/")
-    public ModelAndView index(@Nullable Principal principal) {
+    public ModelAndView index(@Nullable Principal principal) { // Optinalは使えない
         if (principal == null) {
             return new ModelAndView("index", null);
         }

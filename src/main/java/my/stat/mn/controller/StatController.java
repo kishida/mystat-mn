@@ -11,7 +11,7 @@ import io.micronaut.views.View;
 
 @Controller("/")
 @Produces(MediaType.TEXT_HTML)
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS) // IS_AUTHENTICATEDはバグってる
 public class StatController {
 
     @View("stats")

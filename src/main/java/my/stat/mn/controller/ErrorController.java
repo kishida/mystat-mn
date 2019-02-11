@@ -11,7 +11,9 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
-
+import java.security.Principal;
+import java.util.Optional;
+import javax.annotation.Nullable;
 /**
  *
  * @author naoki
@@ -21,8 +23,9 @@ import io.micronaut.security.rules.SecurityRule;
 @Produces(MediaType.TEXT_PLAIN)
 public class ErrorController {
     @Get("/unauthorized")
-    public String unauthorized() {
-        return "unauthorized";
+    public String unauthorized(@Nullable Principal principal) {
+        var popt = Optional.ofNullable(principal);
+        return "unauthorized " + popt.map(p -> p.getName()).orElse("no user");
     }
     
     @Get("/forbidden")
