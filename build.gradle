@@ -40,6 +40,7 @@ dependencies {
     compile "io.micronaut:micronaut-runtime"
     compile "io.micronaut.configuration:micronaut-redis-lettuce"
     compile "io.micronaut:micronaut-http-server-netty"
+    compile "io.micronaut:micronaut-security-session"    
     compile "javax.annotation:javax.annotation-api"
     compile "io.micronaut:micronaut-management"
     compile "org.postgresql:postgresql:42.2.5"

@@ -3,7 +3,7 @@
   <div class="container text-center">
     <h1>My Stat</h1>
     ようこそ
-      <div><a href="login" class="btn btn-light">ログイン</a>
+      <div><a href="login/auth" class="btn btn-light">ログイン</a>
       <a href="register" class="btn btn-primary">登録</a></div>
   </div>
 #parse("views/footer.vm")

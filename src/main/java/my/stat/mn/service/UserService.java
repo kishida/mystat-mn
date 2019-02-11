@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import my.stat.mn.data.User;
 import my.stat.mn.repository.UserMapper;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 /**
@@ -19,10 +20,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 @Singleton
 public class UserService {
     @Inject
-    public MinioClient minio;
+    MinioClient minio;
     
     @Inject
-    public SqlSessionFactory sessionFactory;
+    SqlSessionFactory sessionFactory;
 
     @Cacheable("user")
     public Optional<User> findByHandle(String handle) {
@@ -44,6 +45,14 @@ public class UserService {
             }
             return null;
         });
+    }
+    
+    public String iconUrl(String handle) {
+        try {
+            return minio.presignedGetObject("mystat", handle + "-icon");
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
     
     private <R> R withMapper(Function<UserMapper, R> func) {

@@ -7,8 +7,12 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.multipart.CompletedFileUpload;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.views.View;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import javax.inject.Inject;
 import my.stat.mn.data.User;
@@ -20,21 +24,21 @@ import my.stat.mn.service.UserService;
  */
 @Controller("/")
 @Produces(MediaType.TEXT_HTML)
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class LoginController {
     @Inject
     public UserService userService;
     
     @View("login")
-    @Get("/login")
+    @Get("/login/auth")
     public HttpResponse login() {
-        return HttpResponse.ok();
+        return HttpResponse.ok(new HashMap(Map.of("error", false)));
     }
     
-    @Post(value="/login", consumes = MediaType.APPLICATION_FORM_URLENCODED)
-    public HttpResponse doLogin(String handle) {
-        Optional<User> user = userService.findByHandle(handle);
-        return user.map(u -> HttpResponse.redirect(URI.create("/")))
-                .orElseGet(() -> HttpResponse.notFound());
+    @View("login")
+    @Get("/login/authFailed")
+    public HttpResponse loginFaild() {
+        return HttpResponse.ok(new HashMap(Map.of("error", true)));
     }
 
     @View("register")
@@ -47,6 +51,6 @@ public class LoginController {
     public HttpResponse doRegister(String handle, String name, CompletedFileUpload icon) throws Exception {
         var user = User.builder().userHandle(handle).userName(name).build();
         userService.register(user, icon);
-        return HttpResponse.redirect(URI.create("/"));
+        return HttpResponse.redirect(URI.create("/login/auth"));
     }
 }
