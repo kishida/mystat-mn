@@ -1,5 +1,6 @@
 package my.stat.mn.controller;
 
+import my.stat.mn.data.Status;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
@@ -18,9 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import lombok.Builder;
-import lombok.Data;
-import org.bson.types.ObjectId;
+import my.stat.mn.repository.StatusMapper;
 
 /**
  *
@@ -42,28 +41,14 @@ public class IndexController {
     }
     
     @Inject
-    MongoClient mongo;
-    
-    @Data
-    @Builder
-    public static class Status {
-        ObjectId oid;
-        String userHandle;
-        String text;
-        LocalDateTime createdAt;
-    }
+    StatusMapper statusMapper;
     
     @Post(uri="/", consumes = MediaType.APPLICATION_FORM_URLENCODED)
     public Single<ModelAndView> indexSubmit(@Nullable Principal principal, String text) {
         if (principal == null) {
             return Single.just(index(principal));
         }
-        MongoDatabase db = mongo.getDatabase("mystat");
-        MongoCollection<Status> coll = db.getCollection("status", Status.class);
-        return Single.fromPublisher(coll.insertOne(
-                        Status.builder().userHandle(principal.getName())
-                                        .text(text)
-                                        .createdAt(LocalDateTime.now()).build()))
+        return statusMapper.insert(principal.getName(), text)
                      .map(s -> index(principal));
     }
 }

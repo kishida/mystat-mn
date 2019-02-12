@@ -1,5 +1,7 @@
 package my.stat.mn;
 
+import com.mongodb.reactivestreams.client.MongoClient;
+import com.mongodb.reactivestreams.client.MongoDatabase;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Factory;
 import io.minio.MinioClient;
@@ -22,6 +24,11 @@ public class ServersFactory {
     public MinioClient minio() throws MinioException {
         return new MinioClient(
                 "http://localhost:9000", "mystat", "naokimystat");
+    }
+
+    @Context
+    public MongoDatabase mongoDb(MongoClient mongo) {
+        return mongo.getDatabase("mystat");
     }
     
     @Context
