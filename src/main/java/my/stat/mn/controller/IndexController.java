@@ -30,25 +30,31 @@ import my.stat.mn.repository.StatusMapper;
 @Secured(SecurityRule.IS_ANONYMOUS)
 public class IndexController {
     
-    @Get(uri="/")
-    public ModelAndView index(@Nullable Principal principal) { // Optinalは使えない
-        if (principal == null) {
-            return new ModelAndView("index", null);
-        }
-        Map<String, String> context = new HashMap<>();
-        context.put("name", principal.getName());
-        return new ModelAndView("timeline", context);
-    }
-    
     @Inject
     StatusMapper statusMapper;
+    
+    @Get(uri="/")
+    public Single<ModelAndView> index(@Nullable Principal principal) { // Optinalは使えない
+        if (principal == null) {
+            return Single.just(new ModelAndView("index", null));
+        }
+        
+        return statusMapper.timeline()
+                .toList()
+                .map(statuses -> {
+                    Map<String, Object> context = new HashMap<>();
+                    context.put("name", principal.getName());
+                    context.put("statuses", statuses);
+                    return new ModelAndView("timeline", context);
+                });
+    }
     
     @Post(uri="/", consumes = MediaType.APPLICATION_FORM_URLENCODED)
     public Single<ModelAndView> indexSubmit(@Nullable Principal principal, String text) {
         if (principal == null) {
-            return Single.just(index(principal));
+            return index(principal);
         }
         return statusMapper.insert(principal.getName(), text)
-                     .map(s -> index(principal));
+                     .flatMap(s -> index(principal));
     }
 }

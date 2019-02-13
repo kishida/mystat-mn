@@ -12,12 +12,10 @@
 </div>
 <input type="submit">投稿</input>
 </form>
-    <ul class="list-group">
-      <li class="list-group-item">Helohelohelo</li>
-      <li class="list-group-item">Helohelohelo</li>
-      <li class="list-group-item">Helohelohelo</li>
-      <li class="list-group-item">Helohelohelo</li>
-      <li class="list-group-item">Helohelohelo</li>
+    <ul class="list-group text-left">
+      #foreach ($s in $statuses)
+      <li class="list-group-item">$s.text $s.createdAt</li>
+      #end
     </ul>
   </div>
 #parse("views/footer.vm")
