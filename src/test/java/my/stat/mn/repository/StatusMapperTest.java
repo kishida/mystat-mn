@@ -51,7 +51,6 @@ public class StatusMapperTest {
     
     @Test
     public void timelineTest() {
-        System.out.println("timeline");
         var exe = Executors.newSingleThreadExecutor();
         Flowable<Status> timeline = mapper().timeline();
         var result = timeline
@@ -64,5 +63,19 @@ public class StatusMapperTest {
         }
         //        .forEach(st -> System.out.println(st.getText())).dispose();
         
+    }
+    
+    @Test
+    public void findByHandleTest() {
+        var exe = Executors.newSingleThreadExecutor();
+        Flowable<Status> timeline = mapper().findByHandle("ab");
+        var result = timeline
+                .subscribeOn(Schedulers.from(exe))
+                .doFinally(() -> exe.shutdown())
+                .blockingIterable();
+                
+        for (var f : result) {
+            System.out.println(f);
+        }        
     }
 }

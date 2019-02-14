@@ -50,6 +50,13 @@ public class StatusMapper {
     
     public Flowable<Status> timeline() {
         return Flowable.fromPublisher(
-            getCollection().find().sort(Sorts.descending("createdAt")));
+            getCollection().find()
+                    .sort(Sorts.descending("createdAt")));
+    }
+    
+    public Flowable<Status> findByHandle(String handle) {
+        return Flowable.fromPublisher(
+                getCollection()
+                    .find(Filters.eq("userHandle", handle)));
     }
 }

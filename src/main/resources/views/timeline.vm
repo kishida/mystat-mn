@@ -14,7 +14,7 @@
 </form>
     <ul class="list-group text-left">
       #foreach ($s in $statuses)
-      <li class="list-group-item">$s.text $s.createdAt</li>
+      <li class="list-group-item">$s.userHandle $s.text $s.createdAt</li>
       #end
     </ul>
   </div>
