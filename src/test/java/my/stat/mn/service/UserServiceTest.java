@@ -26,7 +26,7 @@ public class UserServiceTest {
                 "http://localhost:9000", "mystat", "naokimystat");
         UserService service = new UserService();
         service.minio = client;
-        System.out.println(service.iconUrl("ab"));
+        System.out.println(service.iconUrl("john"));
     }
     
 }

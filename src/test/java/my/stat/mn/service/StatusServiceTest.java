@@ -1,30 +1,36 @@
-package my.stat.mn.repository;
+package my.stat.mn.service;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
-import com.mongodb.reactivestreams.client.MongoDatabase;
-import io.reactivex.Flowable;
-import io.reactivex.Maybe;
-import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.Executors;
-import my.stat.mn.data.Status;
+import my.stat.mn.ServersFactory;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.postgresql.ds.PGSimpleDataSource;
 
 /**
  *
  * @author naoki
  */
-public class StatusMapperTest {
+public class StatusServiceTest {
+    
+    ServersFactory factory = null;
+    ServersFactory factory() {
+        if (factory == null) {
+            factory = new ServersFactory();
+        }
+        return factory;
+    }
     
     @Test
-    public void findByIdTest() {
+    public void findByIdTest() throws Exception {
         var id = "5c62f912cf82bf7e6a5d21ac";
-        Maybe<Status> status = mapper().findById(id);
+        var status = mapper().findById(id);
         var exe = Executors.newSingleThreadExecutor();
         var s = status.subscribeOn(Schedulers.from(exe))
               .doFinally(() -> exe.shutdown())
@@ -32,7 +38,23 @@ public class StatusMapperTest {
         System.out.println(s);
     }
     
-    private StatusMapper mapper() {
+    private UserService service() throws Exception{
+        var service = new UserService();
+        
+        service.minio = factory().minio();
+        
+        var ds = new PGSimpleDataSource();
+        ds.setDatabaseName("mystat");
+        ds.setUser("mystat");
+        ds.setPassword("pass");
+        service.sessionFactory = factory().sessionFactory(ds);
+        
+        return service;
+    }
+    
+    private StatusService mapper() throws Exception {
+        var mapper = new StatusService();
+
         String url = "mongodb://localhost:27117";
         var registries = CodecRegistries.fromRegistries(
                 MongoClients.getDefaultCodecRegistry(),
@@ -42,17 +64,19 @@ public class StatusMapperTest {
                 .applyConnectionString(new ConnectionString(url))
                 .build();        
         MongoClient client = MongoClients.create(settings);
-        var db = client.getDatabase("mystat");
         
-        var mapper = new StatusMapper();
+        var db = factory().mongoDb(client);;
+        
         mapper.database = db;
+        mapper.userService = service();
         return mapper;
     }
     
     @Test
-    public void timelineTest() {
+    @Ignore
+    public void timelineTest() throws Exception {
         var exe = Executors.newSingleThreadExecutor();
-        Flowable<Status> timeline = mapper().timeline();
+        var timeline = mapper().timeline();
         var result = timeline
                 .subscribeOn(Schedulers.from(exe))
                 .doFinally(() -> exe.shutdown())
@@ -66,16 +90,24 @@ public class StatusMapperTest {
     }
     
     @Test
-    public void findByHandleTest() {
+    public void findByHandleTest() throws Exception {
         var exe = Executors.newSingleThreadExecutor();
-        Flowable<Status> timeline = mapper().findByHandle("ab");
+        var timeline = mapper().findByHandle("ab");
         var result = timeline
                 .subscribeOn(Schedulers.from(exe))
                 .doFinally(() -> exe.shutdown())
                 .blockingIterable();
-                
-        for (var f : result) {
+        for (var f: result) {
             System.out.println(f);
-        }        
+        }
+    }
+    
+    @Test
+    public void userTest() throws Exception {
+        var mapper = mapper();
+        var tl = mapper.timeline();
+        for (var t : tl.blockingIterable()) {
+            System.out.println(t);
+        }
     }
 }

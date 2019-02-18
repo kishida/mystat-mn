@@ -2,7 +2,9 @@
 #parse("views/header.vm")
   <div class="container text-center">
     <h1><a href="/">MyStat</a> タイムライン</h1>
-    $name <form method="post" action="/logout"><input type="submit" value="logout"></form>
+    <img src="$user.iconUrl"
+        class="rounded mr-2" style="width: 64px; height: 64px;">
+    <a href="/user/$user.userHandle">$user.userName</a> <form method="post" action="/logout"><input type="submit" value="logout"></form>
 
 <form method="post" action="/">
 <div class="form-group text-left">
@@ -14,7 +16,17 @@
 </form>
     <ul class="list-group text-left">
       #foreach ($s in $statuses)
-      <li class="list-group-item">$s.userHandle $s.text $s.createdAt</li>
+      <li class="list-group-item">
+        <img src="$s.user.iconUrl"
+             class="rounded float-left mr-2" style="width: 48px; height: 48px;">
+        <div>
+          <a href="/user/$s.userHandle" class="font-weight-bold">$s.userName</a>
+          <a href="/stat/$s.status.id" class="text-muted">$s.status.createdAt</a>
+        </div>
+        <div>
+          $s.status.text
+        </div>
+      </li>
       #end
     </ul>
   </div>

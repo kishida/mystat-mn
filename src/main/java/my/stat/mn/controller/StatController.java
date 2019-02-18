@@ -8,21 +8,33 @@ import io.micronaut.http.annotation.Produces;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.views.View;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
+import java.util.HashMap;
+import java.util.Map;
+import javax.inject.Inject;
+import my.stat.mn.service.StatusService;
 
 @Controller("/")
 @Produces(MediaType.TEXT_HTML)
 @Secured(SecurityRule.IS_ANONYMOUS) // IS_AUTHENTICATEDはバグってる
 public class StatController {
 
+    @Inject
+    StatusService statusService;
+    
     @View("stats")
     @Get("/user/{user}")
-    public HttpStatus users(String user) {
-        return HttpStatus.OK;
+    public Single<Map<String, Object>> user(String user) {
+        return statusService.findByHandle(user)
+                .toList()
+                .map(tles -> new HashMap<>(Map.of("statuses", tles)));
     }
     
     @View("stat")
     @Get("/stat/{id}")
-    public HttpStatus stat(String id) {
-        return HttpStatus.OK;
+    public Maybe<Map<String, Object>> stat(String id) {
+        return statusService.findById(id)
+                .map(tle -> new HashMap<>(Map.of("status", tle)));
     }
 }

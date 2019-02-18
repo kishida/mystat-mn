@@ -19,7 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import my.stat.mn.repository.StatusMapper;
+import my.stat.mn.service.StatusService;
+import my.stat.mn.service.UserService;
 
 /**
  *
@@ -31,7 +32,10 @@ import my.stat.mn.repository.StatusMapper;
 public class IndexController {
     
     @Inject
-    StatusMapper statusMapper;
+    StatusService statusService;
+    
+    @Inject
+    UserService userService;
     
     @Get(uri="/")
     public Single<ModelAndView> index(@Nullable Principal principal) { // Optinalは使えない
@@ -39,11 +43,11 @@ public class IndexController {
             return Single.just(new ModelAndView("index", null));
         }
         
-        return statusMapper.timeline()
+        return statusService.timeline()
                 .toList()
                 .map(statuses -> {
                     Map<String, Object> context = new HashMap<>();
-                    context.put("name", principal.getName());
+                    context.put("user", userService.findByHandle(principal.getName()).orElse(null));
                     context.put("statuses", statuses);
                     return new ModelAndView("timeline", context);
                 });
@@ -54,7 +58,7 @@ public class IndexController {
         if (principal == null) {
             return index(principal);
         }
-        return statusMapper.insert(principal.getName(), text)
+        return statusService.insert(principal.getName(), text)
                      .flatMap(s -> index(principal));
     }
 }

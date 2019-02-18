@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import my.stat.mn.data.User;
 import my.stat.mn.repository.UserMapper;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 /**
@@ -27,9 +26,12 @@ public class UserService {
 
     @Cacheable("user")
     public Optional<User> findByHandle(String handle) {
-        return withMapper(mapper -> {
-            return mapper.findByHandle(handle);
-        });
+        return withMapper(mapper ->
+            mapper.findByHandle(handle)
+                    .map(u -> {
+                        u.setIconUrl(iconUrl(u.getUserHandle()));
+                        return u;
+                    }));
     }
     
     @CacheInvalidate(value = "user", parameters = "handle")// since it can't specify like $u.userHandle. need param for the key

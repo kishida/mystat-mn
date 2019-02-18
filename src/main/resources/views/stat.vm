@@ -5,11 +5,11 @@
     <div class="card text-left">
       <div class="card-body">
         <div class="card-title">
-        <img src="http://localhost:9000/mystat/kis_icon.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=mystat%2F20190204%2F%2Fs3%2Faws4_request&X-Amz-Date=20190204T191313Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=b7ef098cedc31b3527b13c5d67ec2def7e9485ec1177d45dc1fed30a49e7a2ae"
-             class="rounded flote-left" style="width: 48px; height: 48px;">
-        <a href="/user/kis" class="font-weight-bold">kis</a></div>
-        <p class="card-text">hogehogehogehoge</p>
-        <p class="card-subtitle text-muted">2019/2/23 1:03</p>
+        <img src="$status.user.iconUrl"
+             class="rounded flote-left" style="width: 64px; height: 64px;">
+        <a href="/user/$status.user.userHandle" class="font-weight-bold">$status.user.userName</a></div>
+        <p class="card-text">$status.status.text</p>
+        <p class="card-subtitle text-muted">$status.status.createdAt</p>
       </div>
     </div>
   </div>
