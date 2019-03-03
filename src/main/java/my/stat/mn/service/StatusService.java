@@ -6,6 +6,7 @@ import com.mongodb.reactivestreams.client.FindPublisher;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 import com.mongodb.reactivestreams.client.Success;
+import io.micronaut.tracing.annotation.NewSpan;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
@@ -38,6 +39,7 @@ public class StatusService {
         return database.getCollection("status", Status.class);        
     }
     
+    @NewSpan("mongo.status.insert")
     public Single<Success> insert(String handle, String text) {
         var coll = getCollection();
         return Single.fromPublisher(coll.insertOne(
@@ -46,6 +48,7 @@ public class StatusService {
                                         .createdAt(LocalDateTime.now()).build()));
     }
     
+    @NewSpan("mongo.status.findById")
     public Maybe<TimelineElement> findById(String id) {
         FindPublisher<Status> sts = getCollection()
                 .find(Filters.eq("_id", new ObjectId(id)));
@@ -54,6 +57,7 @@ public class StatusService {
                 .map(s -> createElm(new HashMap<>(), s));
     }
     
+    @NewSpan("mongo.status.timeline")
     public Flowable<TimelineElement> timeline() {
         return Flowable.fromPublisher(
             getCollection().find()
@@ -61,6 +65,7 @@ public class StatusService {
                 .to(this::bind);
     }
     
+    @NewSpan("mongo.status.findByHandle")
     public Flowable<TimelineElement> findByHandle(String handle) {
         return Flowable.fromPublisher(
                 getCollection()

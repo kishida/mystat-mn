@@ -3,6 +3,7 @@ package my.stat.mn.service;
 import io.micronaut.cache.annotation.CacheInvalidate;
 import io.micronaut.cache.annotation.Cacheable;
 import io.micronaut.http.multipart.CompletedFileUpload;
+import io.micronaut.tracing.annotation.NewSpan;
 import io.minio.MinioClient;
 import java.util.Optional;
 import java.util.function.Function;
@@ -25,6 +26,7 @@ public class UserService {
     SqlSessionFactory sessionFactory;
 
     @Cacheable("user")
+    @NewSpan("user.findByHandle")
     public Optional<User> findByHandle(String handle) {
         return withMapper(mapper ->
             mapper.findByHandle(handle)
@@ -49,6 +51,7 @@ public class UserService {
         });
     }
     
+    @NewSpan("minio.iconUrl")
     public String iconUrl(String handle) {
         try {
             return minio.presignedGetObject("mystat", handle + "-icon");
