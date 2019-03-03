@@ -34,6 +34,7 @@ dependencies {
     compile "io.micronaut:micronaut-http-client"
     compile "io.micronaut.configuration:micronaut-micrometer-core"
     compile "io.micronaut.configuration:micronaut-micrometer-registry-prometheus"
+    compile "io.micronaut.configuration:micronaut-kafka"
     compile "io.micronaut:micronaut-inject"
     compile "io.micronaut:micronaut-views"
     compile "io.micronaut:micronaut-validation"

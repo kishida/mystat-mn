@@ -20,6 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import my.stat.mn.data.Status;
 import my.stat.mn.data.User;
+import my.stat.mn.messaging.StatProducer;
 import org.bson.types.ObjectId;
 import org.elasticsearch.action.index.IndexResponse;
 
@@ -39,12 +40,15 @@ public class StatusService {
     @Inject
     SearchService searchService;
     
+    @Inject
+    StatProducer statProducer;
+    
     private MongoCollection<Status> getCollection() {
         return database.getCollection("status", Status.class);        
     }
     
     @NewSpan("mongo.status.insert")
-    public Single<IndexResponse> insert(String handle, String text) {
+    public Single<Success> insert(String handle, String text) {
         var coll = getCollection();
         Status status = Status.builder()
                 .id(new ObjectId())
@@ -52,7 +56,10 @@ public class StatusService {
                 .text(text)
                 .createdAt(LocalDateTime.now()).build();
         return Single.fromPublisher(coll.insertOne(status))
-                .flatMap(suc -> searchService.createIndex(status));
+                .map(suc -> {
+                    statProducer.sendStatus(status.getId().toString(), status);
+                    return suc;
+                });
     }
     
     @NewSpan("mongo.status.findById")
@@ -76,7 +83,8 @@ public class StatusService {
     public Flowable<TimelineElement> findByHandle(String handle) {
         return Flowable.fromPublisher(
                 getCollection()
-                    .find(Filters.eq("userHandle", handle)))
+                    .find(Filters.eq("userHandle", handle))
+                    .sort(Sorts.descending("createdAt")))
                 .to(this::bind);
     }
     
