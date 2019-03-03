@@ -47,6 +47,7 @@ dependencies {
     compile "org.mybatis:mybatis:3.5.0"
     compile "io.minio:minio:6.0.1"
     compile 'io.micronaut.configuration:micronaut-mongo-reactive'
+    compile 'org.elasticsearch.client:elasticsearch-rest-high-level-client:6.6.1'
     compileOnly 'org.projectlombok:lombok:1.18.4'
     compileOnly "com.oracle.substratevm:svm"
     compileOnly "io.micronaut:micronaut-inject-java"

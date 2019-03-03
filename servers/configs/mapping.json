@@ -1,0 +1,21 @@
+{
+  "mappings": {
+    "status": {
+      "properties": {
+        "createdAt": {
+          "type": "date"
+        },
+        "id": {
+          "type": "keyword"
+        },
+        "text": {
+          "type": "text",
+          "analyzer": "kuromoji"
+        },
+        "user": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}

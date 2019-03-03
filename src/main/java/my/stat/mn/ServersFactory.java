@@ -8,11 +8,14 @@ import io.minio.MinioClient;
 import io.minio.errors.MinioException;
 import javax.sql.DataSource;
 import my.stat.mn.repository.UserMapper;
+import org.apache.http.HttpHost;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
 
 /**
  *
@@ -39,5 +42,11 @@ public class ServersFactory {
         conf.addMapper(UserMapper.class);
         conf.setMapUnderscoreToCamelCase(true);
         return new SqlSessionFactoryBuilder().build(conf);        
+    }
+    
+    @Context
+    public RestHighLevelClient elasticClient() {
+        return new RestHighLevelClient(
+                RestClient.builder(new HttpHost("localhost", 9200, "http")));
     }
 }

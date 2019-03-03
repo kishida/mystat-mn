@@ -5,14 +5,17 @@
     <img src="$user.iconUrl"
         class="rounded mr-2" style="width: 64px; height: 64px;">
     <a href="/user/$user.userHandle">$user.userName</a> <form method="post" action="/logout"><input type="submit" value="logout"></form>
-
+<form method="get" action="/search">
+  <input name="keyword" class="form-control" type="text">
+  <input type="submit" value="検索">
+</form>
 <form method="post" action="/">
 <div class="form-group text-left">
 <label for="text">ひとこと</label>
 <textarea name="text" id="text" class="form-control">
 </textarea>
 </div>
-<input type="submit">投稿</input>
+<input type="submit" value="投稿">
 </form>
     <ul class="list-group text-left">
       #foreach ($s in $statuses)

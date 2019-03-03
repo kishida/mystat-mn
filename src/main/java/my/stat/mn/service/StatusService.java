@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 import my.stat.mn.data.Status;
 import my.stat.mn.data.User;
 import org.bson.types.ObjectId;
+import org.elasticsearch.action.index.IndexResponse;
 
 /**
  *
@@ -35,17 +36,23 @@ public class StatusService {
     @Inject
     UserService userService;
     
+    @Inject
+    SearchService searchService;
+    
     private MongoCollection<Status> getCollection() {
         return database.getCollection("status", Status.class);        
     }
     
     @NewSpan("mongo.status.insert")
-    public Single<Success> insert(String handle, String text) {
+    public Single<IndexResponse> insert(String handle, String text) {
         var coll = getCollection();
-        return Single.fromPublisher(coll.insertOne(
-                        Status.builder().userHandle(handle)
-                                        .text(text)
-                                        .createdAt(LocalDateTime.now()).build()));
+        Status status = Status.builder()
+                .id(new ObjectId())
+                .userHandle(handle)
+                .text(text)
+                .createdAt(LocalDateTime.now()).build();
+        return Single.fromPublisher(coll.insertOne(status))
+                .flatMap(suc -> searchService.createIndex(status));
     }
     
     @NewSpan("mongo.status.findById")
@@ -70,6 +77,11 @@ public class StatusService {
         return Flowable.fromPublisher(
                 getCollection()
                     .find(Filters.eq("userHandle", handle)))
+                .to(this::bind);
+    }
+    
+    public Flowable<TimelineElement> search(String keyword) {
+        return searchService.search(keyword)
                 .to(this::bind);
     }
     

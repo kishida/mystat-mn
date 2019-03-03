@@ -4,7 +4,9 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
+import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
+import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.views.View;
@@ -37,4 +39,13 @@ public class StatController {
         return statusService.findById(id)
                 .map(tle -> new HashMap<>(Map.of("status", tle)));
     }
+    
+    @View("stats")
+    @Get(value="/search")
+    public Single<Map<String, Object>> search(@QueryValue String keyword) {
+        return statusService.search(keyword)
+                .toList()
+                .map(tles -> new HashMap<>(Map.of("statuses", tles)));
+    }
+
 }

@@ -26,6 +26,14 @@ import io.micronaut.runtime.Micronaut;
  * $ docker run -d --name mystat-zipkin -p 9411:9411 openzipkin/zipkin
  * $ docker run -d --name mystat-mongo -p 27117:27017 mongo
  * $ docker run -d --name mystat-prom -p 9090:9090 -v /c/Users/naoki/Documents/NetBeansProjects/my-stat-mn:/prom-data prom/prometheus --config.file=/prom-data/prometheus.yml
+ * 
+ * $ docker network create mystat-net
+ * $ docker run -d --name mystat-es --net mystat-net -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:6.6.0
+ * > curl -XPUT -H "Content-Type: application/json" localhost:9200/mystat?pretty=true -d @configs/mapping.json
+ * 
+ * $ docker exec -it mystat-es elasticsearch-plugin install analysis-kuromoji
+ * $ docker run -d --name mystat-kibana --net mystat-net -p 5601:5601 -e ELASTICSEARCH_URL=http://mystat-es:9200 kibana:6.6.0
+ *
  * @author naoki
  */
 
